@@ -97,16 +97,12 @@ body {
     margin-bottom: 16px;
     border-bottom: 1px solid var(--border-color);
 }
+/* CHANGES: Updated .logo to handle an image */
 .logo {
     width: 36px; 
     height: 36px; 
     border-radius: 8px;
-    background: var(--accent);
-    display: grid;
-    place-items: center;
-    color: white;
-    font-weight: bold;
-    font-size: 18px;
+    object-fit: cover;
 }
 .brand-name { 
     font-weight: 600; 
@@ -315,12 +311,13 @@ body {
     text-align: center; 
     padding-bottom: 100px;
 }
+/* CHANGES: Updated .empty-state .logo to handle an image */
 .empty-state .logo { 
     width: 60px; 
     height: 60px; 
-    font-size: 24px;
     border-radius: 12px; 
     margin-bottom: 16px; 
+    object-fit: cover;
 }
 .empty-state h1 { 
     font-size: 24px; 
@@ -376,14 +373,16 @@ body {
     font-weight: 600; 
     flex-shrink: 0; 
 }
+/* CHANGES: Use background-image for AI avatar */
 .avatar.ai {
-    background: var(--accent);
-    color: white;
-    font-weight: bold;
+    background-image: url('images/logo.png');
+    background-size: cover;
+    background-position: center;
+    background-color: transparent;
 }
+/* CHANGES: Hide the user avatar completely */
 .avatar.user { 
-    background: var(--panel); 
-    border: 1px solid var(--border-color); 
+    display: none;
 }
  
 .msg { 
