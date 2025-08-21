@@ -1,0 +1,272 @@
+/* ------------------- */
+/* 1. Global Styles & Theme Variables */
+/* ------------------- */
+:root {
+    --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+    --bg: #111827;
+    --panel: #1f2937;
+    --sidebar: #111827;
+    --muted: #9ca3af;
+    --text: #f9fafb;
+    --accent: #8b5cf6;
+    --accent-hover: #7c3aed;
+    --danger: #ef4444;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --user-bubble: linear-gradient(160deg, rgba(139, 92, 246, .15), rgba(139, 92, 246, .05));
+    --ai-bubble: #374151;
+    --shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+[data-theme="light"] {
+    --bg: #f9fafb;
+    --panel: #ffffff;
+    --sidebar: #f3f4f6;
+    --muted: #4b5563;
+    --text: #111827;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --user-bubble: linear-gradient(160deg, rgba(139, 92, 246, .1), rgba(139, 92, 246, .03));
+    --ai-bubble: #f3f4f6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body, html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+}
+
+/* ------------------- */
+/* 2. Main Layout */
+/* ------------------- */
+.app-container { display: flex; width: 100%; height: 100%; }
+
+.sidebar {
+    width: 260px;
+    background: var(--sidebar);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    padding: 16px;
+    transition: transform 0.3s ease-in-out;
+    flex-shrink: 0;
+    z-index: 100;
+}
+
+.chat-panel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    position: relative;
+}
+ 
+.mobile-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 99;
+    backdrop-filter: blur(2px);
+}
+.mobile-overlay.active { display: block; }
+
+/* ------------------- */
+/* 3. Sidebar Components */
+/* ------------------- */
+.sidebar-header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 16px; margin-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+}
+.logo {
+    width: 36px; height: 36px; border-radius: 8px;
+    background-image: url('images/logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+.brand-name { font-weight: 600; font-size: 18px; }
+
+.new-chat-btn {
+    width: 100%; text-align: left; padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    background: transparent; color: var(--text);
+    border-radius: 8px; font-size: 14px;
+    cursor: pointer; display: flex; align-items: center; gap: 10px;
+    transition: background 0.2s ease;
+}
+.new-chat-btn:hover { background: rgba(255, 255, 255, 0.05); }
+[data-theme="light"] .new-chat-btn:hover { background: rgba(0, 0, 0, 0.05); }
+
+.chat-history { flex-grow: 1; overflow-y: auto; margin-top: 16px; }
+.chat-history-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 10px 12px; border-radius: 6px;
+    cursor: pointer; font-size: 14px; color: var(--muted);
+    margin-bottom: 4px;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+.chat-history-item:hover { background: var(--panel); color: var(--text); }
+.chat-history-item.active { background: var(--accent); color: white; }
+.chat-title { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.delete-chat-btn {
+    background: none; border: none; color: var(--muted);
+    cursor: pointer; font-size: 14px;
+    opacity: 0; transition: opacity 0.2s, color 0.2s;
+    padding: 4px;
+}
+.chat-history-item:hover .delete-chat-btn { opacity: 1; }
+.delete-chat-btn:hover { color: var(--danger); }
+.chat-history-item.active .delete-chat-btn { color: rgba(255,255,255,0.7); }
+.chat-history-item.active .delete-chat-btn:hover { color: white; }
+
+/* ------------------- */
+/* 4. Main Chat Panel Components */
+/* ------------------- */
+.chat-header {
+    padding: 12px 20px;
+    display: flex; align-items: center; justify-content: flex-end;
+    border-bottom: 1px solid var(--border-color);
+    background: rgba(17, 24, 39, 0.5); backdrop-filter: blur(8px);
+    position: absolute; top: 0; left: 0; width: 100%;
+    z-index: 10;
+}
+[data-theme="light"] .chat-header { background: rgba(249, 250, 251, 0.5); }
+ 
+.icon-btn {
+    width: 36px; height: 36px;
+    background: transparent; border: 1px solid var(--border-color);
+    color: var(--text); border-radius: 50%;
+    cursor: pointer; display: grid; place-items: center;
+    transition: background 0.2s ease;
+}
+.icon-btn:hover { background: var(--panel); }
+#menu-btn { display: none; }
+
+.chat-container {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-top: 70px; /* Space for header */
+}
+.message-list {
+    max-width: 800px; margin: 0 auto; width: 100%;
+    padding: 20px;
+}
+ 
+.empty-state {
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    height: 100%; text-align: center; padding-bottom: 100px;
+}
+.empty-state .logo { width: 60px; height: 60px; font-size: 32px; border-radius: 12px; margin-bottom: 16px; }
+.empty-state h1 { font-size: 24px; margin-bottom: 8px; }
+ 
+.prompt-suggestions { 
+    display: flex; 
+    gap: 12px; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    margin-top: 24px; 
+}
+.suggestion-card {
+    background: var(--panel);
+    border: 1px solid var(--border-color);
+    padding: 12px; border-radius: 8px;
+    cursor: pointer; font-size: 14px;
+    transition: background 0.2s ease;
+}
+.suggestion-card:hover { background: var(--ai-bubble); }
+
+.bubble { display: flex; gap: 16px; margin-bottom: 24px; }
+.bubble.user { justify-content: flex-end; }
+ 
+.avatar { width: 36px; height: 36px; border-radius: 8px; display: grid; place-items: center; font-weight: 600; flex-shrink: 0; }
+.avatar.ai {
+    background-image: url('images/logo.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-color: transparent;
+}
+.avatar.user { background: var(--panel); border: 1px solid var(--border-color); }
+ 
+.msg { padding: 12px 16px; border-radius: 12px; max-width: 90%; line-height: 1.6; }
+.bubble.ai .msg { background: var(--ai-bubble); }
+.bubble.user .msg { background: var(--user-bubble); }
+
+.msg p:last-child { margin-bottom: 0; }
+.msg ul, .msg ol { margin: 0.5em 0 1em 1.5em; }
+ 
+.msg pre {
+    background-color: #0d1117 !important;
+    padding: 1em; border-radius: 8px;
+    margin: 1em 0; overflow-x: auto;
+    border: 1px solid var(--border-color);
+}
+.msg pre code { background: none !important; }
+
+/* Typing cursor animation */
+.typing::after {
+    content: '▌';
+    animation: blink-cursor 1s step-end infinite;
+    margin-left: 2px;
+    font-weight: 300;
+}
+@keyframes blink-cursor {
+    from, to { opacity: 0; }
+    50% { opacity: 1; }
+}
+
+.composer-container {
+    padding: 16px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg);
+    flex-shrink: 0;
+}
+.composer {
+    max-width: 800px; margin: 0 auto;
+    display: flex; align-items: flex-end; gap: 10px;
+    padding: 8px; border-radius: 12px;
+    background: var(--panel); border: 1px solid var(--border-color);
+}
+#input {
+    flex-grow: 1; border: none; background: transparent;
+    color: var(--text); font-size: 16px;
+    resize: none; max-height: 200px; outline: none;
+    line-height: 2;
+}
+#sendBtn {
+    width: 38px; height: 38px;
+    background: var(--accent); color: white;
+    border: none; border-radius: 8px;
+    cursor: pointer; display: grid; place-items: center;
+    transition: background 0.2s ease;
+    flex-shrink: 0;
+}
+#sendBtn:hover { background: var(--accent-hover); }
+#sendBtn:disabled { background: var(--muted); cursor: not-allowed; }
+
+/* ------------------- */
+/* 5. Responsive Design */
+/* ------------------- */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        height: 100%;
+        transform: translateX(-100%);
+        box-shadow: var(--shadow);
+    }
+    .sidebar.open { transform: translateX(0); }
+    #menu-btn { display: grid; }
+    .chat-header { justify-content: space-between; }
+    .message-list { padding: 12px; }
+    .composer-container { padding: 12px; }
+}

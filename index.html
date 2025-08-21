@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nedits AI — Professional Assistant</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/favicon.png" type="image/png">
+</head>
+<body>
+
+<div class="app-container">
+    <div class="mobile-overlay" id="mobile-overlay"></div>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo"></div>
+            <span class="brand-name">Nedits AI</span>
+        </div>
+        <button class="new-chat-btn" id="new-chat-btn">
+            <i class="fa-solid fa-plus"></i>
+            <span>New Chat</span>
+        </button>
+        <div class="chat-history" id="chat-history"></div>
+    </aside>
+
+    <main class="chat-panel" id="chat-panel">
+        <header class="chat-header">
+            <button class="icon-btn" id="menu-btn"><i class="fa-solid fa-bars"></i></button>
+            <button class="icon-btn" id="theme-toggle"><i class="fa-solid fa-moon"></i></button>
+        </header>
+
+        <div class="chat-container" id="chat-container">
+            <div class="message-list" id="message-list">
+                <div class="empty-state" id="empty-state">
+                    <div class="logo"></div>
+                    <h1>Nedits AI</h1>
+                    <p>Your official assistant. How can I help you today?</p>
+                    <div class="prompt-suggestions" id="prompt-suggestions">
+                        </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="composer-container">
+            <div class="composer">
+                <textarea id="input" placeholder="Ask Nedits AI anything..." rows="1"></textarea>
+                <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
