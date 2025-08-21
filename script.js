@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // CONFIGURATION & API DETAILS
     const API_KEY = "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"; // Replace this with your actual Groq API key
-    const MODEL_NAME = "mixtral-8x7b-32768"; // Recommended model for Groq
+    const MODEL_NAME = "llama3-8b-8192"; // Recommended model for Groq
     const API_URL = "https://api.groq.com/openai/v1/chat/completions";
     let SYSTEM_PROMPT = '';
     
