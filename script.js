@@ -1,12 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // CONFIGURATION & API DETAILS
-    const API_KEY = "sk-88b41f8a6dc2457c9ad1840bd210fc7b";
-    const API_URL = "https://api.deepseek.com/v1/chat/completions";
-    const MODEL_NAME = "deepseek-chat";
-    let SYSTEM_PROMPT = '';
-    let CUSTOM_INSTRUCTIONS = '';
-
+// CONFIGURATION & API DETAILS
+const API_KEY = "AIzaSyChf0rkINK82TNGAh2bOr84o20Vg1MEL_s"; // Replace this with your actual API key
+const MODEL_NAME = "gemini-1.5-flash-latest";
+const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${MODEL_NAME}:streamGenerateContent?key=${API_KEY}`;
+let SYSTEM_PROMPT = '';
+    
     // DOM ELEMENT REFERENCES
     const sidebar = document.getElementById('sidebar');
     const menuBtn = document.getElementById('menu-btn');
