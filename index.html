@@ -3,58 +3,148 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nedits AI — Professional Assistant</title>
+    <title>Nedits AI — Your Professional Growth Partner</title>
+    <meta name="description" content="Nedits AI is your official expert AI assistant for creative, tech, and marketing solutions. Get expert guidance for your projects.">
 
+    <!-- Stylesheets & Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="images/favicon.png" type="image/png">
+
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#8b5cf6">
+    <link rel="apple-touch-icon" href="images/logo.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
 </head>
 <body>
 
 <div class="app-container">
+    <!-- Mobile Overlay -->
     <div class="mobile-overlay" id="mobile-overlay"></div>
+    
+    <!-- Sidebar -->
     <aside class="sidebar" id="sidebar">
         <div class="sidebar-header">
             <div class="logo"></div>
             <span class="brand-name">Nedits AI</span>
         </div>
+        
         <button class="new-chat-btn" id="new-chat-btn">
             <i class="fa-solid fa-plus"></i>
             <span>New Chat</span>
         </button>
+
+        <!-- Search Bar -->
+        <div class="search-container">
+            <i class="fa-solid fa-search"></i>
+            <input type="text" id="chat-search" placeholder="Search conversations...">
+        </div>
+
         <div class="chat-history" id="chat-history"></div>
+
+        <!-- Custom Instructions Button -->
+        <button class="custom-instructions-btn" id="instructions-btn">
+            <i class="fa-solid fa-sliders"></i>
+            <span>Custom Instructions</span>
+        </button>
     </aside>
 
+    <!-- Main Chat Panel -->
     <main class="chat-panel" id="chat-panel">
         <header class="chat-header">
             <button class="icon-btn" id="menu-btn"><i class="fa-solid fa-bars"></i></button>
-            <button class="icon-btn" id="theme-toggle"><i class="fa-solid fa-moon"></i></button>
+            <div class="header-actions">
+                <button class="icon-btn" id="export-btn" title="Export Chat"><i class="fa-solid fa-download"></i></button>
+                <button class="icon-btn" id="voice-input-btn" title="Voice Input"><i class="fa-solid fa-microphone"></i></button>
+                <button class="icon-btn" id="theme-toggle"><i class="fa-solid fa-moon"></i></button>
+            </div>
         </header>
 
         <div class="chat-container" id="chat-container">
             <div class="message-list" id="message-list">
                 <div class="empty-state" id="empty-state">
                     <div class="logo"></div>
-                    <h1>Nedits AI</h1>
-                    <p>Your official assistant. How can I help you today?</p>
+                    <h1>Welcome to Nedits AI! 👋</h1>
+                    <p>Your expert partner for creative, tech, and marketing solutions. What amazing idea are you looking to bring to life today?</p>
                     <div class="prompt-suggestions" id="prompt-suggestions">
-                        </div>
+                        <!-- Suggestions will be loaded from JSON -->
+                    </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Stop Generation Button (Hidden by default) -->
+        <div class="stop-generation-container" id="stop-container" style="display: none;">
+            <button class="stop-generation-btn" id="stop-btn">
+                <i class="fa-solid fa-stop"></i>
+                Stop Generating
+            </button>
         </div>
 
         <div class="composer-container">
             <div class="composer">
                 <textarea id="input" placeholder="Ask Nedits AI anything..." rows="1"></textarea>
-                <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                <div class="composer-actions">
+                    <button class="icon-btn" id="attach-btn" title="Attach File"><i class="fa-solid fa-paperclip"></i></button>
+                    <button id="sendBtn"><i class="fa-solid fa-paper-plane"></i></button>
+                </div>
             </div>
         </div>
     </main>
 </div>
 
+<!-- Custom Instructions Modal -->
+<div class="modal" id="instructions-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Custom Instructions</h2>
+            <button class="close-modal" id="close-instructions">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Set preferences for how Nedits AI should respond to you</p>
+            <textarea id="instructions-text" placeholder="Example: Always respond in Hindi, keep answers concise, focus on web development solutions..."></textarea>
+        </div>
+        <div class="modal-footer">
+            <button class="btn-secondary" id="cancel-instructions">Cancel</button>
+            <button class="btn-primary" id="save-instructions">Save</button>
+        </div>
+    </div>
+</div>
+
+<!-- Export Modal -->
+<div class="modal" id="export-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2>Export Conversation</h2>
+            <button class="close-modal" id="close-export">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p>Choose export format:</p>
+            <div class="export-options">
+                <button class="export-option" data-format="text">
+                    <i class="fa-solid fa-file-lines"></i>
+                    <span>Text File</span>
+                </button>
+                <button class="export-option" data-format="pdf">
+                    <i class="fa-solid fa-file-pdf"></i>
+                    <span>PDF</span>
+                </button>
+                <button class="export-option" data-format="image">
+                    <i class="fa-solid fa-image"></i>
+                    <span>Image</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Scripts -->
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="script.js"></script>
 </body>
 </html>
